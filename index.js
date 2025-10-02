@@ -67,3 +67,7 @@ app.get('/api/shorturl/:id', (req, res) => {
     return res.json({ error: 'No short URL found' });
   }
 });
+
+app.listen(port, function () {
+  console.log(`Listening on port ${port}`);
+});
