@@ -30,6 +30,13 @@ let counter = 1;
 app.post('/api/shorturl', (req, res) => {
   const inputUrl = req.body.url;
 
+  // Must start with http:// or https://
+  const regex = /^https?:\/\/(.*)/;
+
+  if (!regex.test(inputUrl)) {
+    return res.json({ error: 'invalid url' });
+  }
+
   try {
     const urlObj = new URL(inputUrl);
 
@@ -55,12 +62,8 @@ app.get('/api/shorturl/:id', (req, res) => {
   const found = urls.find(u => u.short_url === id);
 
   if (found) {
-    res.redirect(found.original_url);
+    return res.redirect(found.original_url);
   } else {
-    res.json({ error: 'No short URL found' });
+    return res.json({ error: 'No short URL found' });
   }
-});
-
-app.listen(port, function () {
-  console.log(`Listening on port ${port}`);
 });
